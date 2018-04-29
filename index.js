@@ -1,6 +1,7 @@
 var fs = require("fs");
 var HtmlDom = require("htmldom");
-var data = null;
+var RE = require("re2");
+var data = [];
 
 
 
@@ -18,10 +19,9 @@ var jaw_parser = function(filename, callback){
 		if(err) throw new JawError(err);
 		scripts = document.$("script");
 		for(var i = 0; i < scripts.length; i++){
-			console.log(scripts[i].attributes)
-			if(scripts[i].attributes.data == "true"){
-				data = JSON.parse(scripts[i].children[0].value);
-				console.log(data);
+			console.log("processing "+scripts[0].attributes.name+"...");
+			if(scripts[i].attributes.data === "true"){
+				data.push(JSON.parse(scripts[i].children[0].value.strip()));
 			}
 			directory = getDataValue(scripts[i].attributes.directory);
 			mode = getDataValue(scripts[i].attributes.mode);
@@ -37,11 +37,12 @@ var jaw_parser = function(filename, callback){
 
 
 
+
+
 function getDocument(filename, callback){
 	fs.readFile(filename,"utf-8", function(err, htmlString){
 		if(err) callback(err, null);
 		else {
-			codukmonej wlkaefkar bfaev.krgalo
 			document = new HtmlDom(htmlString);
 			callback(null, document);
 		}
@@ -51,15 +52,28 @@ function getDocument(filename, callback){
 
 
 
-function getDataValue(string_path){
-	string_path = string_path.remove("{|}");
-	path = string_path.split(".");
-	for (var i = 0; i < path.length; i++){
-		value = value[array[i]];
+
+
+
+
+
+function getDataValue(string){
+	var start = new RE('{{');
+	var stop = new RE('}}');
+	var value = string;
+	if(start.match(value) || stop.match(value)){
+		if(start.match(value) && stop.match(value)){
+			value = start.replace("", stop.replace("", value));
+			array = value.strip(".");
+			for (var i = 0; i < array.length; i++){
+				value = i === 0? data[array[i]] : value[array[i]];
+			}
+		}
+		else throw new JawError();
 	}
-	console.log(value);
 	return value;
 }
+
 
 
 
