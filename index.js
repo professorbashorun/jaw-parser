@@ -14,25 +14,44 @@ var data = [];
 
 
 //parser puts the scripts object in the right place
-var jaw_parser = function(filename, callback){
+var jaw_parser = function(filename/*parse in a .jaw or .html document type*/, callback){
 	getDocument(filename, function(err, document){
 		if(err) throw new JawError(err);
 		scripts = document.$("script");
-		for(var i = 0; i < scripts.length; i++){
-			console.log("processing "+scripts[0].attributes.name+"...");
-			if(scripts[i].attributes.data === "true"){
-				data.push(JSON.parse(scripts[i].children[0].value.strip()));
-			}
-			directory = getDataValue(scripts[i].attributes.directory);
-			mode = getDataValue(scripts[i].attributes.mode);
-			content = scripts[i].children[0].value;
-			fs.writeFile(directory, content, function(err, response){
-				if(err) throw new JawError(err);
-				else new SuccessHandler(response);
-			});
-		}
+		allocatePositions(scripts);
 	});
 }
+
+
+
+
+function allocatePositions(scripts/*HTMLDOM Document Type*/){
+	for(var i = 0; i < scripts.length; i++){
+		console.log("processing "+scripts[0].attributes.name+"...");
+		if(scripts[i].attributes.data === "true"){
+			data.push(JSON.parse(scripts[i].children[0].value.strip()));
+		}
+		directory = getDataValue(scripts[i].attributes.directory);
+		mode = getDataValue(scripts[i].attributes.mode);
+		content = scripts[i].children[0].value.strip();
+		writeFile(directory, content, mode);
+	}
+}
+
+
+
+
+
+
+
+function writeFile(directory, content, mode){
+	fs.writeFile(directory, content, function(err, response){
+		if(err) throw new JawError(err);
+		else new SuccessHandler(response);
+	});
+}
+
+
 
 
 
@@ -78,9 +97,11 @@ function getDataValue(string){
 
 
 
+
 function JawError(err){
 	return Error(err);
 }
+
 
 
 
@@ -94,5 +115,5 @@ function SuccessHandler(response){
 
 
 module.exports = {
-	parse:jaw_parser
+	parse:jaw_parser,
 };
