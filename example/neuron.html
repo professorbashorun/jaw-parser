@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NEURON EXAMPLE</title>
+</head>
+<body>
+
+
+	<!-- NEURON APP CONTAINER -->
+	<!-- =================================================================== -->
+	<div id="app" neuron-state={{Neuron.mode}}></div>
+
+
+
+	<!-- NEURON DATA STRUCTURE -->
+	<script type="text/javascript" data="true" language="javascript" mode={{Neuron.mode}} directory={{Neuron.directory.data.schema}} status={{Neuron.status.NOT_DONE}}>
+		Neuron = {
+			mode:'development',
+			status: {
+				DONE : 1,
+				NOT_DONE : 0
+			}
+			directories : {
+				data : {
+					schema : "./model/neuron.js"
+				},
+				sensor: {
+					request : "./public/javascripts/sensor.js"
+				}
+			}
+		}
+	</script>
+
+
+
+
+	<!-- NEURON SENSOR 	-->
+	<!-- =================================================================== -->
+	<script type="text/javascripts" language="javascript" mode={{Neuron.mode}} directory={{Neuron.directory.sensor.request}} status={{Neuron.status.NOT_DONE}}>
+		
+		function hello(){
+			console.log("HELLO WORLD");
+		}
+
+	</script>
+
+
+
+</body>
+</html>
