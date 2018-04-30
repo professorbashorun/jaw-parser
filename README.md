@@ -48,18 +48,21 @@ jaw.parse(path_to_jaw_file);
           ||
           ||
           \/
-          
-<!DOCTYPE html>
-<html>
-<head>
-	<title>JAW EXAMPLE</title>
-</head>
-<body>
+
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>JAW EXAMPLE</title>
+	</head>
+	<body>
+
 
 
 	<!-- EXAMPLE CONTAINER -->
 	<!-- =================================================================== -->
 	<div id="app" mode={{Data.mode}}></div>
+	
 
 
 
@@ -70,7 +73,7 @@ jaw.parse(path_to_jaw_file);
 			status: {
 				DONE : 1,
 				NOT_DONE : 0
-			}
+			},
 			directories : {
 				data : {
 					schema : "./model/neuron.js"
@@ -78,9 +81,9 @@ jaw.parse(path_to_jaw_file);
 				sensor: {
 					request : "./public/javascripts/sensor.js"
 				 },
-         processor : {
-           analyser : "./src/analyser.py"
-         }
+		         processor : {
+		           analyser : "./src/analyser.py"
+		         }
 			},
 		}
 	</script>
@@ -96,7 +99,8 @@ jaw.parse(path_to_jaw_file);
 
 
 
-  	<!-- (PYTHON) DATA DISCOVERY LAYER	-->
+  	
+	<!-- (PYTHON) DATA DISCOVERY LAYER	-->
 	<!-- =================================================================== -->
 	<script type="text/python" language="python" mode={{Data.mode}} directory={{Data.directory.processor.analyser}} status={{Data.status.NOT_DONE}}>
 		import pandas as pd;
@@ -106,7 +110,6 @@ jaw.parse(path_to_jaw_file);
 		def correlations(events_filename):
 			dataframes = pd.read_csv(events);
 			pass;
-
 
 		def clusters(events_filename):
 			dataframes = pd.read_csv(events);
@@ -118,10 +121,8 @@ jaw.parse(path_to_jaw_file);
 		def learn_correlation(events_filename):
 		//do something.
 	</script>
-
-
-
-</body>
-</html>
+	
+	</body>
+	</html>
 
 
